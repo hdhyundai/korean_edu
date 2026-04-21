@@ -54,7 +54,11 @@
   </style>
 </head>
 <body>
-  <div id="root"></div>
+  <div id="root">
+     <div class="flex h-screen items-center justify-center text-slate-500 text-sm">
+        앱을 불러오는 중입니다...
+     </div>
+  </div>
   
   <script type="text/babel">
     const { useState, useEffect, useRef } = React;
@@ -70,7 +74,7 @@
         selectTitleLearn: "어떤 생산 관련 문장을\n학습하시겠습니까?", selectSubLearn: "학습할 공정을 선택해 주세요.",
         selectTitleQuiz: "어떤 생산 관련 문장으로\n평가하시겠습니까?", selectSubQuiz: "평가받을 공정을 선택해 주세요.",
         quizGuide: "한국어 음성을 듣고, 알맞은 뜻을 선택하세요.",
-        fullscreen: "전체화면"
+        fullscreen: "전체화면",
         detailDesc: "상세 설명"
       },
       id: { 
@@ -81,7 +85,7 @@
         selectTitleLearn: "Kalimat produksi mana\nyang ingin dipelajari?", selectSubLearn: "Pilih proses yang ingin Anda pelajari.",
         selectTitleQuiz: "Kalimat produksi mana\nyang ingin diuji?", selectSubQuiz: "Pilih proses untuk dievaluasi.",
         quizGuide: "Dengarkan audio dan pilih arti yang tepat.",
-        fullscreen: "Layar Penuh"
+        fullscreen: "Layar Penuh",
         detailDesc: "Deskripsi Detail"
       },
       vi: { 
@@ -92,7 +96,7 @@
         selectTitleLearn: "Bạn muốn học câu lệnh\ncủa công đoạn nào?", selectSubLearn: "Vui lòng chọn công đoạn để học.",
         selectTitleQuiz: "Bạn muốn kiểm tra câu lệnh\ncủa công đoạn nào?", selectSubQuiz: "Vui lòng chọn công đoạn để kiểm tra.",
         quizGuide: "Nghe âm thanh và chọn nghĩa chính xác.",
-        fullscreen: "Toàn màn hình"
+        fullscreen: "Toàn màn hình",
         detailDesc: "Mô tả chi tiết"
       },
       np: { 
@@ -103,7 +107,7 @@
         selectTitleLearn: "तपाईं कुन उत्पादन वाक्यहरू\nसिक्न चाहनुहुन्छ?", selectSubLearn: "सिक्ने प्रक्रिया छान्नुहोस्।",
         selectTitleQuiz: "तपाईं कुन उत्पादन वाक्यहरू\nपरीक्षण गर्न चाहनुहुन्छ?", selectSubQuiz: "परीक्षण गर्ने प्रक्रिया छान्नुहोस्।",
         quizGuide: "कोरियन अडियो सुन्नुहोस् र सही अर्थ छान्नुहोस्।",
-        fullscreen: "पूर्ण पर्दा"
+        fullscreen: "पूर्ण पर्दा",
         detailDesc: "विस्तृत विवरण"
       }
     };
@@ -124,7 +128,7 @@
     };
 
     const deptInfo = {
-      '공통': { ko: "조선소 전 구역에 적용되는 필수 안전 수칙, 보호구 착용 규정, 그리고 작업자 간 공통 소통 용어 및 기본 작업 지침을 담당합니다.", id: "Menangani aturan keselamatan wajib, standar pemakaian APD, istilah komunikasi umum antar pekerja, dan pedoman kerja dasar.", vi: "Phụ trách các quy tắc an toàn bắt buộc, quy định mặc đồ bảo hộ, thuật ngữ giao tiếp chung giữa các công nhân và hướng dẫn làm việc cơ bản.", np: "सम्पूर्ण शिपयार्ड क्षेत्रमा लागू हुने अनिवार्य सुरक्षा नियमहरू र आधारभूत कार्य निर्देशनहरू व्यवस्थापन गर्दछ।" },
+      '공통': { ko: "조선소 전 구역에 적용되는 필수 안전 수칙, 보호구 착용 규정, 그리고 작업자 간 공통 소통 용어 및 기본 작업 지침을 담당합니다.", id: "Menangani aturan keselamatan wajib, standar pemakaian APD, istilah komunikasi umum antar pekerja, dan pedoman kerja dasar.", vi: "Phụ trách các quy tắc an toàn bắt buộc, quy định mặc đồ bảo hộ, thuật ngữ giao tiếp chung giữa các công nhân và hướng dẫn làm việc cơ bản.", np: "सम्पूर्ण शिपयार्ड क्षेत्रमा लागू हुने अनिवार्य सुरक्षा नियमहरू와 आधारभूत कार्य निर्देशनहरू व्यवस्थापन गर्दछ।" },
       '가공부': { ko: "강재(철판)의 절단, 마킹, 베벨(개선) 가공 및 선박 외판의 곡면 성형을 위한 열간 가공(곡직) 등 기초 뼈대를 만드는 작업을 수행합니다.", id: "Melakukan pemotongan plat baja, penandaan (marking), proses bevel, dan pemanasan lentur untuk membentuk rangka dasar lambung kapal.", vi: "Thực hiện cắt thép tấm, đánh dấu, gia công vát mép và gia công nhiệt để tạo khung cơ bản cho bề mặt cong của vỏ tàu.", np: "स्टिल प्लेट काट्ने, मार्किङ गर्ने, बेभल गर्ने र जहाजको बाहिरी भागलाई घुमाउरो आकार दिन तताएर बङ्ग्याउने जस्ता आधारभूत फ्रेम निर्माणको काम गर्दछ।" },
       '판넬조립부': { ko: "가공된 평면 철판 부재들을 용접하여 선박의 평평한 바닥이나 격벽이 되는 2차원 평면 블록(Panel)을 제작하는 자동/수동 조립 공정입니다.", id: "Proses perakitan dan pengelasan plat datar menjadi blok datar 2D (Panel) yang akan membentuk lantai atau dinding partisi kapal.", vi: "Quy trình lắp ráp và hàn các tấm thép phẳng thành các khối phẳng 2D (Panel) để làm sàn hoặc vách ngăn của tàu.", np: "प्रशोधित फ्ल्याट स्टिल प्लेटहरूलाई वेल्डिङ गरेर जहाजको भुइँ वा पर्खाल बन्ने २D फ्ल्याट ब्लक निर्माण गर्ने अटोमेटिक/म्यानुअल एसेम्बली प्रक्रिया हो।" },
       '대조립부': { ko: "제작된 평면 블록과 다양한 부재들을 결합하여, 거대한 3차원 입체 블록(선체 조각)으로 완성하는 고난이도 취부, 용접, 사상 작업을 수행합니다.", id: "Melakukan penyetelan (fitting), pengelasan, dan penghalusan tingkat tinggi untuk menggabungkan blok datar menjadi blok 3D raksasa.", vi: "Thực hiện gá lắp, hàn và mài nhẵn độ khó cao để kết hợp các khối phẳng và vật tư thành các khối 3D khổng lồ (từng phần vỏ tàu).", np: "तयार गरिएका फ्ल्याट ब्लक र विभिन्न भागहरू जोडेर विशाल ३D ब्लक (जहाजको टुक्रा) बनाउन उच्च स्तरको फिटिङ, वेल्डिङ र ग्राइन्डिङको काम गर्दछ।" },
@@ -171,7 +175,6 @@
         default: return <svg className={iconClasses} fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M12 6v6m0 0v6m0-6h6m-6 0H6" /></svg>;
       }
     };
-
     // ==========================================
     // 데이터 로드 위치: 아래 rawStrings 변수에 전체 데이터가 삽입되어야 합니다.
     // ==========================================
@@ -704,8 +707,7 @@
       "선박커미셔닝부|안전/기타|잠시 대기|시스템 준비 중이니 조작하지 말고 기다리세요|Tunggu 잠시|Jam-si dae-gi|Chờ một lát|Jam-si dae-gi|एकछिन पर्खनुहोस्|Jam-si dae-gi"
     ];
 
-    // 에러 발생을 원천 차단하는 강력한 데이터 파싱
-    const parsedData = (() => {
+const parsedData = (() => {
       const res = { '공통': [], '가공부': [], '판넬조립부': [], '대조립부': [], '선행의장부': [], '선행도장부': [], '의장부': [], '건조부': [], '선실생산부': [], '선박커미셔닝부': [] };
       try {
         if (typeof rawStrings !== 'undefined' && Array.isArray(rawStrings)) {
@@ -943,6 +945,7 @@
         <div className="fixed inset-0 w-full h-full bg-[#E2E8F0] flex justify-center">
           <div className="h-full w-full max-w-2xl flex flex-col bg-[#F4F6F9] overflow-hidden relative shadow-2xl">
             
+            {/* HOME */}
             {view === 'home' && (
               <div className="flex-1 flex flex-col p-5 items-center justify-center fade-in scroll-container relative w-full h-full">
                 <div className="absolute top-5 left-5 right-5 flex justify-between items-center z-10">
@@ -1004,6 +1007,7 @@
               </div>
             )}
 
+            {/* SELECT DEPT */}
             {view === 'select' && (
               <div className="flex-1 flex flex-col fade-in overflow-hidden bg-[#F4F6F9]">
                 <header className="px-4 py-3.5 flex justify-center items-center shrink-0 relative bg-white border-b border-slate-200 shadow-sm">
@@ -1061,6 +1065,7 @@
               </div>
             )}
 
+            {/* LEARN */}
             {view === 'learn' && (
               <div className="flex-1 flex flex-col fade-in overflow-hidden bg-[#F4F6F9]">
                 <TopHeader title={`${activeDept} 학습`} />
@@ -1141,6 +1146,7 @@
               </div>
             )}
 
+            {/* QUIZ (가로 배치 컴팩트 레이아웃) */}
             {view === 'quiz' && (
               <div className="flex-1 flex flex-col fade-in overflow-hidden bg-[#F4F6F9]">
                 <TopHeader title={`${activeDept} 퀴즈`} />
