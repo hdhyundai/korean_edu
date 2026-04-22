@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="theme-color" content="#002C5F">
   <title>HD현대삼호 YARD 한국어</title>
   
@@ -15,15 +16,38 @@
   <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
 
   <style>
-    html, body, #root { width: 100%; height: 100%; margin: 0; padding: 0; overflow: hidden; overscroll-behavior-y: none; -webkit-tap-highlight-color: transparent; user-select: none; font-family: 'Pretendard', sans-serif; background-color: #E2E8F0; }
-    .scroll-container { overflow-y: auto; -webkit-overflow-scrolling: touch; }
-    .scroll-container::-webkit-scrollbar { width: 5px; }
+    html, body, #root {
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      padding: 0;
+      overflow: hidden; 
+      overscroll-behavior-y: none; 
+      -webkit-tap-highlight-color: transparent;
+      user-select: none;
+      font-family: 'Pretendard', sans-serif;
+      touch-action: pan-y;
+      background-color: #E2E8F0;
+    }
+
+    .scroll-container {
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+      overscroll-behavior-y: contain; 
+    }
+    .scroll-container::-webkit-scrollbar { width: 5px; height: 5px; }
+    .scroll-container::-webkit-scrollbar-track { background: transparent; }
     .scroll-container::-webkit-scrollbar-thumb { background: #CBD5E1; border-radius: 10px; }
+    
     .fade-in { animation: fadeIn 0.3s ease-out forwards; }
-    .slide-up { animation: slideUp 0.4s ease-out forwards; }
+    .slide-up { animation: slideUp 0.4s cubic-bezier(0.2, 0.8, 0.2, 1) forwards; }
+    
     @keyframes fadeIn { 0% { opacity: 0; } 100% { opacity: 1; } }
     @keyframes slideUp { 0% { opacity: 0; transform: translateY(20px); } 100% { opacity: 1; transform: translateY(0); } }
+    
+    .btn-press { transition: transform 0.1s, opacity 0.1s; }
     .btn-press:active { transform: scale(0.96); opacity: 0.9; }
+
     .playing-pulse { animation: pulse 1s infinite alternate; }
     @keyframes pulse { 0% { opacity: 1; transform: scale(1); } 100% { opacity: 0.8; transform: scale(1.05); } }
   </style>
@@ -35,7 +59,7 @@
         <span>앱 시스템을 준비하는 중입니다...</span>
      </div>
   </div>
-
+  
   <script>
     window.HD_DATA = [
       "공통|안전 및 보호구|보호구 착용해|안전 장비를 반드시 착용하세요|Pakai alat pelindung diri|Bo-ho-gu chak-yong-hae|Hãy mặc đồ bảo hộ đầy đủ|Bo-ho-gu chak-yong-hae|सुरक्षा उपकरण लगाउनुहोस्|Bo-ho-gu chak-yong-hae",
@@ -486,52 +510,104 @@
       "선박커미셔닝부|안전/기타|긴급 정지 버튼 눌러|문제가 생기면 고민 말고 비상 버튼을 누르세요|Tekan tombol berhenti darurat segera|Gin-geup jeong-ji beo-teun nul-reo|Bấm ngay nút dừng khẩn cấp|Gin-geup jeong-ji beo-teun nul-reo|आपतकालीन स्टप बटन थिच्नुहोस्|Gin-geup jeong-ji beo-teun nul-reo",
       "선박커미셔닝부|안전/기타|엔진 온도 체크해|운전 중인 엔진 온도가 너무 높지 않은지 보세요|Periksa suhu pada mesin utama|En-jin on-do che-keu-hae|Hãy kiểm tra nhiệt độ của động cơ|En-jin on-do che-keu-hae|इन्जिनको तापक्रम जाँच्नुहोस्|En-jin on-do che-keu-hae",
       "선박커미셔닝부|안전/기타|잠시 대기|시스템 준비 중이니 조작하지 말고 기다리세요|Harap tunggu sebentar di tempat|Jam-si dae-gi|Hãy đứng chờ một lát|Jam-si dae-gi|एकछिन पर्खनुहोस्|Jam-si dae-gi"
-];
+  ];
   </script>
 
   <script type="text/babel">
     const { useState, useEffect, useRef } = React;
+
     const isAppBrowser = /KAKAOTALK|Instagram|FBAN|FBAV|Line|NAVER/i.test(navigator.userAgent);
 
     const uiText = {
-      ko: { menuLearn: "학습하기", subLearn: "현장 지시어 학습", menuQuiz: "실전 퀴즈", subQuiz: "실전 능력 평가", back: "뒤로", home: "홈", start: "학습 시작", startQuiz: "퀴즈 시작", cancel: "닫기", detail: "상세설명", meaning: "의미", deptDesc: "부서 직무 안내", qNum: "문항", score: "점수", empty: "데이터가 없습니다.", search: "용어 검색...", progress: "진도율", highScore: "최고 점수", review: "오답 노트", myAns: "선택한 답", correctAns: "정답", backToResult: "결과 확인", modeLearn: "학습 모드", modeQuiz: "평가 모드", selectTitleLearn: "어떤 생산 관련 문장을\n학습하시겠습니까?", selectSubLearn: "학습할 공정을 선택해 주세요.", selectTitleQuiz: "어떤 생산 관련 문장으로\n평가하시겠습니까?", selectSubQuiz: "평가받을 공정을 선택해 주세요.", quizGuide: "한국어 음성을 듣고, 알맞은 뜻을 선택하세요.", fullscreen: "전체화면", detailDesc: "상세 설명" },
-      id: { menuLearn: "학습하기", subLearn: "Belajar Instruksi Lapangan", menuQuiz: "실전 퀴즈", subQuiz: "Kuis Latihan Praktis", back: "Kembali", home: "Beranda", start: "Mulai", startQuiz: "Mulai Kuis", cancel: "Tutup", detail: "Detail", meaning: "Arti", deptDesc: "Deskripsi Tugas", qNum: "Soal", score: "Skor", empty: "Tidak ada data.", search: "Cari istilah...", progress: "Progres", highScore: "Skor Tertinggi", review: "Catatan Salah", myAns: "Jawaban Anda", correctAns: "Jawaban Benar", backToResult: "Kembali", modeLearn: "Mode Belajar", modeQuiz: "Mode Evaluasi", selectTitleLearn: "Kalimat produksi mana\nyang ingin dipelajari?", selectSubLearn: "Pilih proses yang ingin Anda pelajari.", selectTitleQuiz: "Kalimat produksi mana\nyang ingin diuji?", selectSubQuiz: "Pilih proses untuk dievaluasi.", quizGuide: "Dengarkan audio dan pilih arti yang tepat.", fullscreen: "Layar Penuh", detailDesc: "Deskripsi Detail" },
-      vi: { menuLearn: "학습하기", subLearn: "Học lệnh hiện trường", menuQuiz: "실전 퀴즈", subQuiz: "Câu đố thực hành", back: "Quay lại", home: "Trang chủ", start: "Bắt đầu", startQuiz: "Bắt đầu đố", cancel: "Đóng", detail: "Chi tiết", meaning: "Ý nghĩa", deptDesc: "Mô tả công việc", qNum: "Câu hỏi", score: "Điểm", empty: "Không có dữ liệu.", search: "Tìm kiếm...", progress: "Tiến độ", highScore: "Điểm cao nhất", review: "Ghi chú sai", myAns: "Câu trả lời của bạn", correctAns: "Đáp án đúng", backToResult: "Quay lại", modeLearn: "Chế độ học tập", modeQuiz: "Chế độ đánh giá", selectTitleLearn: "Bạn muốn học câu lệnh\ncủa công đoạn nào?", selectSubLearn: "Vui lòng chọn công đoạn để học.", selectTitleQuiz: "Bạn muốn kiểm tra câu lệnh\ncủa công đoạn nào?", selectSubQuiz: "Vui lòng chọn công đoạn để kiểm tra.", quizGuide: "Nghe âm thanh và chọn nghĩa chính xác.", fullscreen: "Toàn màn hình", detailDesc: "Mô tả chi tiết" },
-      np: { menuLearn: "학습하기", subLearn: "साइट निर्देशनहरू सिक्नुहोस्", menuQuiz: "실전 퀴즈", subQuiz: "व्यावहारिक अभ्यास क्विज", back: "पछाडि", home: "होम", start: "सुरु गर्नुहोस्", startQuiz: "क्विज सुरु", cancel: "बन्द", detail: "विवरण", meaning: "अर्थ", deptDesc: "विभाग विवरण", qNum: "प्रश्न", score: "अंक", empty: "कुनै डाटा छैन।", search: "खोज्नुहोस्...", progress: "प्रगति", highScore: "उच्च अंक", review: "गलत उत्तर नोट", myAns: "तपाईंको उत्तर", correctAns: "सही उत्तर", backToResult: "फर्कनुहोस्", modeLearn: "सिक्ने मोड", modeQuiz: "परीक्षण मोड", selectTitleLearn: "तपाईं कुन उत्पादन वाक्यहरू\nसिक्न चाहनुहुन्छ?", selectSubLearn: "सिक्ने प्रक्रिया छान्नुहोस्।", selectTitleQuiz: "तपाईं कुन उत्पादन वाक्यहरू\nपरीक्षण गर्न चाहनुहुन्छ?", selectSubQuiz: "परीक्षण गर्ने प्रक्रिया छान्नुहोस्।", quizGuide: "कोरियन अडियो सुन्नुहोस् र सही अर्थ छान्नुहोस्।", fullscreen: "पूर्ण पर्दा", detailDesc: "विस्तृत विवरण" }
+      ko: { 
+        menuLearn: "학습하기", subLearn: "현장 지시어 학습", 
+        menuQuiz: "실전 퀴즈", subQuiz: "실전 능력 평가",
+        back: "뒤로", home: "홈", start: "학습 시작", startQuiz: "퀴즈 시작", cancel: "닫기", detail: "상세설명", meaning: "의미", deptDesc: "부서 직무 안내", qNum: "문항", score: "점수", empty: "데이터가 없습니다.", search: "용어 검색...", progress: "진도율", highScore: "최고 점수", review: "오답 노트", myAns: "선택한 답", correctAns: "정답", backToResult: "결과 확인",
+        modeLearn: "학습 모드", modeQuiz: "평가 모드",
+        selectTitleLearn: "어떤 생산 관련 문장을\n학습하시겠습니까?", selectSubLearn: "학습할 공정을 선택해 주세요.",
+        selectTitleQuiz: "어떤 생산 관련 문장으로\n평가하시겠습니까?", selectSubQuiz: "평가받을 공정을 선택해 주세요.",
+        quizGuide: "한국어 음성을 듣고, 알맞은 뜻을 선택하세요.",
+        fullscreen: "전체화면", detailDesc: "상세 설명"
+      },
+      id: { 
+        menuLearn: "학습하기", subLearn: "Belajar Instruksi Lapangan", 
+        menuQuiz: "실전 퀴즈", subQuiz: "Kuis Latihan Praktis",
+        back: "Kembali", home: "Beranda", start: "Mulai", startQuiz: "Mulai Kuis", cancel: "Tutup", detail: "Detail", meaning: "Arti", deptDesc: "Deskripsi Tugas", qNum: "Soal", score: "Skor", empty: "Tidak ada data.", search: "Cari istilah...", progress: "Progres", highScore: "Skor Tertinggi", review: "Catatan Salah", myAns: "Jawaban Anda", correctAns: "Jawaban Benar", backToResult: "Kembali",
+        modeLearn: "Mode Belajar", modeQuiz: "Mode Evaluasi",
+        selectTitleLearn: "Kalimat produksi mana\nyang ingin dipelajari?", selectSubLearn: "Pilih proses yang ingin Anda pelajari.",
+        selectTitleQuiz: "Kalimat produksi mana\nyang ingin diuji?", selectSubQuiz: "Pilih proses untuk dievaluasi.",
+        quizGuide: "Dengarkan audio dan pilih arti yang tepat.",
+        fullscreen: "Layar Penuh", detailDesc: "Deskripsi Detail"
+      },
+      vi: { 
+        menuLearn: "학습하기", subLearn: "Học lệnh hiện trường", 
+        menuQuiz: "실전 퀴즈", subQuiz: "Câu đố thực hành",
+        back: "Quay lại", home: "Trang chủ", start: "Bắt đầu", startQuiz: "Bắt đầu đố", cancel: "Đóng", detail: "Chi tiết", meaning: "Ý nghĩa", deptDesc: "Mô tả công việc", qNum: "Câu hỏi", score: "Điểm", empty: "Không có dữ liệu.", search: "Tìm kiếm...", progress: "Tiến độ", highScore: "Điểm cao nhất", review: "Ghi chú sai", myAns: "Câu trả lời của bạn", correctAns: "Đáp án đúng", backToResult: "Quay lại",
+        modeLearn: "Chế độ học tập", modeQuiz: "Chế độ đánh giá",
+        selectTitleLearn: "Bạn muốn học câu lệnh\ncủa công đoạn nào?", selectSubLearn: "Vui lòng chọn công đoạn để học.",
+        selectTitleQuiz: "Bạn muốn kiểm tra câu lệnh\ncủa công đoạn nào?", selectSubQuiz: "Vui lòng chọn công đoạn để kiểm tra.",
+        quizGuide: "Nghe âm thanh và chọn nghĩa chính xác.",
+        fullscreen: "Toàn màn hình", detailDesc: "Mô tả chi tiết"
+      },
+      np: { 
+        menuLearn: "학습하기", subLearn: "साइट निर्देशनहरू सिक्नुहोस्", 
+        menuQuiz: "실전 퀴즈", subQuiz: "व्यावहारिक अभ्यास क्विज",
+        back: "पछाडि", home: "होम", start: "सुरु गर्नुहोस्", startQuiz: "क्विज सुरु", cancel: "बन्द", detail: "विवरण", meaning: "अर्थ", deptDesc: "विभाग विवरण", qNum: "प्रश्न", score: "अंक", empty: "कुनै डाटा छैन।", search: "खोज्नुहोस्...", progress: "प्रगति", highScore: "उच्च अंक", review: "गलत उत्तर नोट", myAns: "तपाईंको उत्तर", correctAns: "सही उत्तर", backToResult: "फर्कनुहोस्",
+        modeLearn: "सिक्ने मोड", modeQuiz: "परीक्षण मोड",
+        selectTitleLearn: "तपाईं कुन उत्पादन वाक्यहरू\nसिक्न चाहनुहुन्छ?", selectSubLearn: "सिक्ने प्रक्रिया छान्नुहोस्।",
+        selectTitleQuiz: "तपाईं कुन उत्पादन वाक्यहरू\nपरीक्षण गर्न चाहनुहुन्छ?", selectSubQuiz: "परीक्षण गर्ने प्रक्रिया छान्नुहोस्।",
+        quizGuide: "कोरियन अडियो सुन्नुहोस् र सही अर्थ छान्नुहोस्।",
+        fullscreen: "पूर्ण पर्दा", detailDesc: "विस्तृत विवरण"
+      }
     };
     
     const flagMap = { ko: 'KR', id: 'ID', vi: 'VE', np: 'NP' };
-    const deptColors = { '공통': { bg: 'bg-slate-50', border: 'border-slate-200', text: 'text-slate-600', ring: 'hover:border-slate-300' }, '가공부': { bg: 'bg-orange-50', border: 'border-orange-200', text: 'text-orange-600', ring: 'hover:border-orange-300' }, '판넬조립부': { bg: 'bg-blue-50', border: 'border-blue-200', text: 'text-blue-600', ring: 'hover:border-blue-300' }, '대조립부': { bg: 'bg-emerald-50', border: 'border-emerald-200', text: 'text-emerald-600', ring: 'hover:border-emerald-300' }, '선행의장부': { bg: 'bg-cyan-50', border: 'border-cyan-200', text: 'text-cyan-600', ring: 'hover:border-cyan-300' }, '선행도장부': { bg: 'bg-purple-50', border: 'border-purple-200', text: 'text-purple-600', ring: 'hover:border-purple-300' }, '의장부': { bg: 'bg-indigo-50', border: 'border-indigo-200', text: 'text-indigo-600', ring: 'hover:border-indigo-300' }, '건조부': { bg: 'bg-rose-50', border: 'border-rose-200', text: 'text-rose-600', ring: 'hover:border-rose-300' }, '선실생산부': { bg: 'bg-amber-50', border: 'border-amber-200', text: 'text-amber-600', ring: 'hover:border-amber-300' }, '선박커미셔닝부': { bg: 'bg-sky-50', border: 'border-sky-200', text: 'text-sky-600', ring: 'hover:border-sky-300' } };
+
+    const deptColors = {
+      '공통': { bg: 'bg-slate-50', border: 'border-slate-200', text: 'text-slate-600', ring: 'hover:border-slate-300' },
+      '가공부': { bg: 'bg-orange-50', border: 'border-orange-200', text: 'text-orange-600', ring: 'hover:border-orange-300' },
+      '판넬조립부': { bg: 'bg-blue-50', border: 'border-blue-200', text: 'text-blue-600', ring: 'hover:border-blue-300' },
+      '대조립부': { bg: 'bg-emerald-50', border: 'border-emerald-200', text: 'text-emerald-600', ring: 'hover:border-emerald-300' },
+      '선행의장부': { bg: 'bg-cyan-50', border: 'border-cyan-200', text: 'text-cyan-600', ring: 'hover:border-cyan-300' },
+      '선행도장부': { bg: 'bg-purple-50', border: 'border-purple-200', text: 'text-purple-600', ring: 'hover:border-purple-300' },
+      '의장부': { bg: 'bg-indigo-50', border: 'border-indigo-200', text: 'text-indigo-600', ring: 'hover:border-indigo-300' },
+      '건조부': { bg: 'bg-rose-50', border: 'border-rose-200', text: 'text-rose-600', ring: 'hover:border-rose-300' },
+      '선실생산부': { bg: 'bg-amber-50', border: 'border-amber-200', text: 'text-amber-600', ring: 'hover:border-amber-300' },
+      '선박커미셔닝부': { bg: 'bg-sky-50', border: 'border-sky-200', text: 'text-sky-600', ring: 'hover:border-sky-300' }
+    };
+
     const deptInfo = {
-      '공통': { ko: "조선소 전 구역 필수 안전 수칙, 보호구 착용 규정 및 공통 작업 지침을 담당합니다.", id: "Aturan keselamatan wajib, standar APD, dan pedoman kerja dasar di seluruh area galangan.", vi: "Quy tắc an toàn bắt buộc, quy định bảo hộ và hướng dẫn làm việc chung trên toàn xưởng.", np: "सम्पूर्ण शिपयार्ड क्षेत्रमा लागू हुने अनिवार्य सुरक्षा नियमहरू र आधारभूत कार्य निर्देशनहरू।" },
-      '가공부': { ko: "강재 절단, 마킹, 베벨 가공 및 곡면 성형을 위한 기초 뼈대 제작을 수행합니다.", id: "Pemotongan plat, penandaan, proses bevel, dan pembentukan rangka dasar lambung kapal.", vi: "Thực hiện cắt thép, đánh dấu, gia công vát mép và tạo khung cơ bản cho vỏ tàu.", np: "स्टिल प्लेट काट्ने, मार्किङ गर्ने, बेभल गर्ने र आधारभूत फ्रेम निर्माणको काम गर्दछ।" },
-      '판넬조립부': { ko: "가공된 부재를 용접하여 바닥이나 격벽이 되는 2차원 평면 블록(Panel)을 제작합니다.", id: "Perakitan dan pengelasan plat menjadi blok datar 2D (Panel) untuk lantai atau dinding.", vi: "Lắp ráp và hàn các tấm thép thành các khối phẳng 2D (Panel) để làm sàn hoặc vách.", np: "प्लेटहरूलाई वेल्डिङ गरेर भुइँ वा पर्खाल बन्ने २D फ्ल्याट ब्लक निर्माण गर्ने प्रक्रिया।" },
-      '대조립부': { ko: "평면 블록과 부재를 결합하여 거대한 3차원 입체 블록(선체 조각)으로 조립합니다.", id: "Penyetelan dan pengelasan untuk menggabungkan blok datar menjadi blok 3D raksasa.", vi: "Gá lắp và hàn để kết hợp các khối phẳng thành các khối 3D khổng lồ (từng phần vỏ tàu).", np: "फ्ल्याट ब्लक र विभिन्न भाग जोडेर विशाल ३D ब्लक (जहाजको टुक्रा) बनाउने काम गर्दछ।" },
-      '선행의장부': { ko: "블록이 도크에 탑재되기 전, 파이프, 서포트, 철의장품 등을 지상에서 사전 설치합니다.", id: "Pra-pemasangan pipa, penyangga, dan perlengkapan besi di darat sebelum blok diangkat ke dok.", vi: "Lắp đặt trước ống, giá đỡ, thiết bị sắt trên bờ trước khi khối block được cẩu lên dock.", np: "ब्लक डकमा लैजानु अघि पाइप, सपोर्ट र उपकरणहरू जमिनमै जडान गर्ने प्रक्रिया हो।" },
-      '선행도장부': { ko: "부식 방지를 위해 탑재 전 블록 표면의 녹을 제거하고 특수 페인트 도장을 전담합니다.", id: "Sandblasting dan penyemprotan cat khusus untuk mencegah korosi sebelum blok diangkat.", vi: "Thực hiện phun cát làm sạch gỉ sét và phun sơn đặc chủng chống ăn mòn bề mặt block.", np: "खिया लाग्नबाट बचाउन बालुवाले हानेर खिया फाल्ने र विशेष पेन्ट स्प्रे गर्ने काम गर्दछ।" },
-      '의장부': { ko: "주로 도크 탑재 이후 선행의장부와 동일한 배관, 서포트, 장비 설치 공정을 담당합니다.", id: "Pemasangan pipa dan perlengkapan besi, difokuskan pada proses setelah blok masuk dok.", vi: "Lắp đặt đường ống, giá đỡ và thiết bị sắt ở giai đoạn sau khi cẩu lắp lên dock.", np: "मुख्यतया डकमा लोड गरेपछिको पछिल्लो चरणको पाइप र उपकरणहरू जडान गर्ने काम गर्दछ।" },
-      '건조부': { ko: "도크 내에서 블록을 크레인으로 탑재하고 단차를 맞추어 최종 조립 및 용접합니다.", id: "Mengangkat blok ke Dok, menyetel perbedaan tinggi, dan pengelasan akhir lambung kapal.", vi: "Cẩu lắp khối block xuống Dock, căn chỉnh độ chênh lệch và hàn lắp ráp lần cuối.", np: "डक भित्र ब्लक लोड गर्ने, उचाइ मिलाउने र अन्तिम एसेम्बली तथा वेल्डिङ गर्ने काम गर्दछ।" },
-      '선실생산부': { ko: "선원 거주구 내부의 단열재 시공, 가구 설치, 화장실 세팅, 마감 인테리어를 전담합니다.", id: "Pemasangan isolasi, furnitur, toilet kabin, dan pengerjaan interior tempat tinggal kru.", vi: "Thi công vật liệu cách nhiệt, nội thất, thiết lập nhà vệ sinh và hoàn thiện cabin.", np: "चालक दल बस्ने डेक भित्र इन्सुलेसन, फर्निचर, बाथरुम र भित्री सजावटको काम गर्दछ।" },
-      '선박커미셔닝부': { ko: "전기 및 기계 장비에 전원을 투입하고, 최종 시운전을 통해 성능을 검증하는 부서입니다.", id: "Menyalakan daya peralatan dan melakukan uji coba akhir untuk memverifikasi performa kapal.", vi: "Cấp nguồn cho thiết bị và tiến hành chạy thử (commissioning) cuối cùng để kiểm tra.", np: "उपकरणहरूमा पावर दिने र अन्तिम परीक्षण (कमिशनिङ) मार्फत कार्यक्षमता प्रमाणित गर्ने।" }
+      '공통': { ko: "조선소 전 구역에 적용되는 필수 안전 수칙, 보호구 착용 규정, 그리고 작업자 간 공통 소통 용어 및 기본 작업 지침을 담당합니다.", id: "Menangani aturan keselamatan wajib, standar pemakaian APD, istilah komunikasi umum antar pekerja, dan pedoman kerja dasar.", vi: "Phụ trách các quy tắc an toàn bắt buộc, quy định mặc đồ bảo hộ, thuật ngữ giao tiếp chung giữa các công nhân và hướng dẫn làm việc cơ bản.", np: "सम्पूर्ण शिपयार्ड क्षेत्रमा लागू हुने अनिवार्य सुरक्षा नियमहरू र आधारभूत कार्य निर्देशनहरू व्यवस्थापन गर्दछ।" },
+      '가공부': { ko: "강재(철판)의 절단, 마킹, 베벨(개선) 가공 및 선박 외판의 곡면 성형을 위한 열간 가공(곡직) 등 기초 뼈대를 만드는 작업을 수행합니다.", id: "Melakukan pemotongan plat baja, penandaan (marking), proses bevel, dan pemanasan lentur untuk membentuk rangka dasar lambung kapal.", vi: "Thực hiện cắt thép tấm, đánh dấu, gia công vát mép và gia công nhiệt để tạo khung cơ bản cho bề mặt cong của vỏ tàu.", np: "स्टिल प्लेट काट्ने, मार्किङ गर्ने, बेभल गर्ने र जहाजको बाहिरी भागलाई घुमाउरो आकार दिन तताएर बङ्ग्याउने जस्ता आधारभूत फ्रेम निर्माणको काम गर्दछ।" },
+      '판넬조립부': { ko: "가공된 평면 철판 부재들을 용접하여 선박의 평평한 바닥이나 격벽이 되는 2차원 평면 블록(Panel)을 제작하는 자동/수동 조립 공정입니다.", id: "Proses perakitan dan pengelasan plat datar menjadi blok datar 2D (Panel) yang akan membentuk lantai atau dinding partisi kapal.", vi: "Quy trình lắp ráp và hàn các tấm thép phẳng thành các khối phẳng 2D (Panel) để làm sàn hoặc vách ngăn của tàu.", np: "प्रशोधित फ्ल्याट स्टिल प्लेटहरूलाई वेल्डिङ गरेर जहाजको भुइँ वा पर्खाल बन्ने २D फ्ल्याट ब्लक निर्माण गर्ने अटोमेटिक/म्यानुअल एसेम्बली प्रक्रिया हो।" },
+      '대조립부': { ko: "제작된 평면 블록과 다양한 부재들을 결합하여, 거대한 3차원 입체 블록(선체 조각)으로 완성하는 고난이도 취부, 용접, 사상 작업을 수행합니다.", id: "Melakukan penyetelan (fitting), pengelasan, dan penghalusan tingkat tinggi untuk menggabungkan blok datar menjadi blok 3D raksasa.", vi: "Thực hiện gá lắp, hàn và mài nhẵn độ khó cao để kết hợp các khối phẳng và vật tư thành các khối 3D khổng lồ (từng phần vỏ tàu).", np: "तयार गरिएका फ्ल्याट ब्लक र विभिन्न भागहरू जोडेर विशाल ३D ब्लक (जहाजको टुक्रा) बनाउन उच्च स्तरको फिटिङ, वेल्डिङ र ग्राइन्डिङको काम गर्दछ।" },
+      '선행의장부': { ko: "블록이 도크에 탑재되기 전, 지상(공장)에서 미리 각종 파이프 배관, 서포트, 철의장품 및 전장 트레이 등을 사전 설치하는 효율화 공정입니다.", id: "Proses pra-pemasangan pipa, penyangga, perlengkapan besi, dan rak kabel di darat sebelum blok diangkat ke dok kapal untuk efisiensi.", vi: "Quy trình lắp đặt trước các loại đường ống, giá đỡ, thiết bị sắt và máng cáp điện trên bờ trước khi khối block được cẩu lên dock.", np: "ब्लकलाई डकमा लैजानु अघि जमिनमै विभिन्न पाइप, सपोर्ट, फलामका उपकरण र केबल ट्रेहरू जडान गरेर कामलाई छिटो र प्रभावकारी बनाउने प्रक्रिया हो।" },
+      '선행도장부': { ko: "부식 방지와 선박 수명 연장을 위해, 탑재 전 블록 표면의 녹을 제거하는 샌드 블라스팅(전처리)과 스프레이 특수 페인트 도장 작업을 전담합니다.", id: "Menangani sandblasting untuk menghilangkan karat (pra-perawatan) dan penyemprotan cat khusus untuk mencegah korosi serta memperpanjang umur kapal.", vi: "Chuyên thực hiện phun cát để làm sạch gỉ sét bề mặt block và phun sơn đặc chủng để chống ăn mòn, kéo dài tuổi thọ tàu.", np: "जहाजलाई खिया लाग्नबाट बचाउन र आयु बढाउन, ब्लक लोड गर्नु अघि बालुवाले हानेर खिया फाल्ने र विशेष पेन्ट स्प्रे गर्ने काम गर्दछ।" },
+      '의장부': { ko: "선행의장부와 동일한 배관, 서포트, 철의장품 설치 작업을 수행하며, 주로 도크(Dock) 탑재 이후의 후행 공정을 담당하는 부서입니다.", id: "Melakukan pekerjaan pemasangan pipa, penyangga, dan perlengkapan besi yang sama dengan departemen Pra-outfitting, namun difokuskan pada proses pasca-dok.", vi: "Thực hiện các công việc lắp đặt đường ống, giá đỡ và thiết bị sắt giống như bộ phận Tiền trang bị, nhưng chủ yếu phụ trách ở giai đoạn sau khi cẩu lắp lên dock.", np: "पूर्व-आउटफिटिङ जस्तै पाइप, सपोर्ट र फलामका उपकरणहरू जडान गर्ने काम गर्दछ, तर मुख्यतया डकमा लोड गरेपछिको पछिल्लो चरणको काम गर्दछ।" },
+      '건조부': { ko: "도크(Dock) 내에서 완성된 대형 블록들을 크레인으로 탑재하고, 선체 블록 간의 미세한 단차를 맞추어 최종 조립 및 용접하여 선박의 완전한 형태를 만듭니다.", id: "Mengangkat blok raksasa dengan crane ke dalam Dok, menyetel perbedaan tinggi antar blok, serta melakukan pengelasan akhir untuk membentuk kapal utuh.", vi: "Cẩu lắp các khối block lớn đã hoàn thiện xuống Dock, căn chỉnh độ chênh lệch nhỏ giữa các khối vỏ tàu, lắp ráp và hàn lần cuối.", np: "डक (Dock) भित्र क्रेनको सहायताले ठूला ब्लकहरू लोड गर्ने, ब्लकहरू बीचको उचाइ मिलाउने र अन्तिम एसेम्बली तथा वेल्डिङ गरेर जहाजलाई पूर्ण रूप दिने काम गर्दछ।" },
+      '선실생산부': { ko: "선원들이 생활하는 거주구(Deck House) 내부의 단열재 시공, 목공 가구 설치, 화장실(Unit) 세팅, 바닥재 및 마감 인테리어 공사를 전담합니다.", id: "Mengerjakan pemasangan isolasi termal, furnitur kayu, toilet kabin (unit), pelapis lantai, dan pengerjaan interior di area tempat tinggal kru.", vi: "Chuyên thi công vật liệu cách nhiệt, lắp đặt đồ gỗ nội thất, thiết lập nhà vệ sinh đúc sẵn (Unit), lót sàn và hoàn thiện trang trí nội thất.", np: "चालक दल बस्ने डेक हाउस भित्र इन्सुलेसन लगाउने, काठका फर्निचर जडान गर्ने, बाथरुम सेटिङ गर्ने र भुइँ तथा भित्री सजावटको काम गर्दछ।" },
+      '선박커미셔닝부': { ko: "선박의 모든 전기 및 기계 장비에 전원을 투입하고, 최종 시운전(테스트)을 통해 장비의 정상 작동 여부와 성능을 검증하는 부서입니다.", id: "Departemen yang menyalakan daya untuk semua peralatan listrik dan mekanik kapal, serta melakukan uji coba (commissioning) akhir untuk memverifikasi performanya.", vi: "Bộ phận cấp nguồn cho tất cả các thiết bị điện và cơ khí của tàu, đồng thời tiến hành chạy thử (commissioning) cuối cùng để kiểm tra hiệu suất.", np: "जहाजका सबै विद्युतीय र मेकानिकल उपकरणहरूमा पावर दिने र अन्तिम परीक्षण (कमिशनिङ) मार्फत तिनीहरूको कार्यक्षमता प्रमाणित गर्ने विभाग हो।" }
     };
+
     const shipyardDict = {
-      '단도리 해': { ko: "작업 전 도면, 자재, 공구를 준비하고 주변을 정리하는 현장 기초 단계입니다.", id: "Menyiapkan gambar, material, alat, dan merapikan area kerja sebelum bekerja.", vi: "Chuẩn bị trước bản vẽ, vật tư, dụng cụ và dọn dẹp khu vực làm việc.", np: "काम सुरु गर्नु अघि नक्सा, सामग्री र औजारहरू तयार गर्ने र सफा गर्ने चरण हो।" },
-      '시마이해': { ko: "당일 물량을 종료하고, 주변 쓰레기 정리를 마친 뒤 퇴근을 준비하라는 지시입니다.", id: "Instruksi mengakhiri pekerjaan hari ini, membersihkan sampah, dan bersiap pulang.", vi: "Chỉ thị kết thúc công việc trong ngày, dọn sạch rác và chuẩn bị ra về.", np: "आजको काम समाप्त गर्ने, फोहोर सफा गर्ने र घर जान तयार हुने निर्देशन हो।" },
-      '야리끼 해': { ko: "목표 작업량을 달성할 경우, 남은 근무 시간과 무관하게 조기 퇴근을 허용하는 은어입니다.", id: "Istilah borongan: jika target selesai awal, pekerja diizinkan pulang lebih cepat.", vi: "Nếu đạt đủ khối lượng công việc mục tiêu, cho phép về sớm bất kể thời gian.", np: "तोकिएको लक्ष्य पूरा भएमा चाँडै घर जान दिइने ठेक्का प्रणालीको शब्दावली हो।" },
-      '사상해': { ko: "철판 절단면의 날카로운 버(Burr)나 용접 비드를 핸드 그라인더로 갈아내는 연마 공정입니다.", id: "Menghaluskan sisa potongan tajam atau lasan tidak rata menggunakan mesin gerinda.", vi: "Mài nhẵn mép cắt sắc nhọn hoặc đường hàn gồ ghề bằng máy mài cầm tay.", np: "तीखो भाग वा वेल्डिङको खस्रो सतहलाई ग्राइन्डरले चिल्लो बनाउने प्रक्रिया हो।" },
-      '하카 체결해': { ko: "크레인 양중을 위해 부재 끝부분에 리프팅 클램프(하카)를 고정하라는 의미입니다.", id: "Mengunci klem penjepit (huck) di ujung material untuk mengangkat plat dengan crane.", vi: "Gắn chặt kẹp nâng (huck) vào mép vật tư để cẩu các tấm thép hoặc khối block.", np: "क्रेनले भारी प्लेट उठाउन लिफ्टिङ क्ल्याम्प (हाका) लाई सुरक्षित रूपमा कस्ने।" },
-      '데나오시 해': { ko: "작업 실수나 불합격으로 인해 기시공 부위를 해체하고 도면에 맞춰 재시공하라는 지시입니다.", id: "Membongkar bagian yang salah atau gagal inspeksi lalu mengerjakannya ulang.", vi: "Tháo dỡ phần làm sai hoặc không đạt kiểm tra và thi công lại theo bản vẽ.", np: "गल्ती वा फेल भएको भागलाई भत्काउने र नक्सा अनुसार फेरि काम गर्ने निर्देशन हो।" },
-      '아다리 걸렸다': { ko: "보안경 없이 용접 불빛을 보다가 강렬한 자외선에 의해 각막 화상을 입어 아픈 상태입니다.", id: "Kondisi mata terbakar (flash burn) dan perih akibat menatap sinar las tanpa kacamata.", vi: "Đau mắt dữ dội do bỏng giác mạc vì nhìn trực tiếp vào tia lửa hàn không đeo kính.", np: "सुरक्षा चस्मा नलगाई वेल्डिङ हेर्दा आँखाको नानी जलेर असाध्यै दुख्ने अवस्था हो।" },
-      '가우징 파': { ko: "내부 결함 부위를 탄소 전극봉의 아크 열로 녹이고 고압 공기로 불어내 깊게 파내는 작업입니다.", id: "Mengupas lasan cacat dengan elektroda karbon dan meniupkan udara bertekanan tinggi.", vi: "Nung chảy phần hàn lỗi bằng hồ quang than và dùng khí nén thổi bay xỉ để khoét rãnh.", np: "खराब वेल्डिङलाई कार्बनले पगालेर हाइ प्रेसर हावाले उडाउँदै गहिरो काट्ने काम हो।" },
-      '턴오버 해': { ko: "바닥면 용접이나 각도 확보를 위해 2대 이상의 크레인으로 블록을 180도 뒤집는 공정입니다.", id: "Membalikkan blok raksasa 180 derajat di udara menggunakan crane untuk mengelas bawahnya.", vi: "Dùng cẩu lật ngược khối block 180 độ trên không trung nhằm phục vụ việc hàn đáy.", np: "तल्लो भाग वेल्डिङ गर्न क्रेनको तारले विशाल ब्लकलाई १८० डिग्री पल्टाउने प्रक्रिया हो।" },
-      'LOTO 실시해': { ko: "점검 중 타인이 전원을 조작하지 못하게 스위치에 물리적 자물쇠와 경고 태그를 부착하는 절차입니다.", id: "Memasang gembok fisik dan label peringatan pada sakelar mesin agar tidak dihidupkan orang lain.", vi: "Khóa ổ khóa và treo thẻ cảnh báo vào thiết bị đang sửa chữa để ngăn người khác bật lên.", np: "उपकरण मर्मत गर्दा अरूले स्विच अन गर्न नसकोस् भनेर ताला र चेतावनी ट्याग लगाउने।" },
-      '취부해': { ko: "도면에 맞추어 두 부품을 정위치시킨 뒤, 본 용접 전 틀어지지 않게 점용접하여 고정하는 작업입니다.", id: "Memposisikan material presisi sesuai gambar, lalu melakukan las cantum sementara (tack weld).", vi: "Định vị chính xác hai chi tiết theo bản vẽ, sau đó hàn đính tạm để cố định trước khi hàn.", np: "नक्सा अनुसार दुई भागलाई सही ठाउँमा राखेर नहल्लिने गरी अस्थायी ट्याक वेल्डिङ गर्ने।" },
-      '리꾸 박아라': { ko: "조립 간격이 규정치 이상으로 넓어진 곳에 덧판 없이 용접 비드를 다층으로 쌓아 틈을 메꾸는 보강 용접입니다.", id: "Mengisi celah lebar antar material dengan menumpuk lapisan lasan tebal berkali-kali (build-up).", vi: "Hàn đắp nhiều lớp mối hàn cho dày lên để lấp kín khoảng hở quá rộng giữa các chi tiết.", np: "ग्याप धेरै भएको ठाउँमा अतिरिक्त प्लेट नराखी वेल्डिङको पत्र खप्टाएर भर्ने काम हो।" },
-      '나라시 해': { ko: "하역된 자재 더미들을 후속 작업자가 사용하기 편하도록 바닥에 겹치지 않게 평평하게 정렬하는 작업입니다.", id: "Merapikan material yang menumpuk di lantai secara merata agar pekerja selanjutnya mudah mengambilnya.", vi: "Sắp xếp trải đều các vật tư đang chất đống trên sàn sao cho không chồng chéo lên nhau.", np: "थुपारिएका सामग्रीहरूलाई पछिको कामदारले सजिलै लिन सकोस् भनेर नखप्टिने गरी राख्ने काम हो।" },
-      '빠데 발라': { ko: "페인트 품질을 위해 철판 표면의 미세한 굴곡, 패임, 기공 부위에 퍼티를 발라 평탄화시키는 전처리입니다.", id: "Mempersiapkan permukaan dengan mengoleskan dempul tebal ke lubang kecil agar menjadi mulus.", vi: "Dùng dao trét bả matit vào các vết lõm, lỗ bọt khí mối hàn để làm phẳng bề mặt thép.", np: "पेन्टिङको गुणस्तर बढाउन फलामको खाल्डो वा वेल्डिङको प्वालहरूमा पुट्टी लेपेर चिल्लो बनाउने।" },
-      '헤자 이동해라': { ko: "완성된 초대형 블록을 운반하기 위해 수십 개의 바퀴가 달린 특수 중량물 운반 차량을 유도하라는 지시입니다.", id: "Memandu kendaraan pengangkut super berat (Transporter/Heza) untuk memindahkan blok raksasa.", vi: "Gọi xe vận chuyển siêu trọng (Transporter/Heza) có hàng chục bánh xe đến để di chuyển khối block.", np: "विशाल ब्लक सार्नको लागि दर्जनौं पाङ्ग्रा भएको विशेष भारी गाडी (ट्रान्सपोर्टर) लाई ल्याउने।" },
-      '물팀 조출했어': { ko: "도장 전 철판의 염분, 먼지를 제거하기 위해 수세척 팀이 정규 시간보다 일찍 출근해 세척 중이라는 알림입니다.", id: "Tim pencuci air tekanan tinggi datang bekerja lebih awal untuk membersihkan garam sebelum pengecatan.", vi: "Đội chuyên xịt rửa áp lực cao đã đi làm sớm hơn để rửa sạch muối, bụi trên thép trước khi sơn.", np: "पेन्टिङ अघि फलाम पखाल्न हाइ प्रेसर पानी हान्ने टोली नियमित समय भन्दा अगावै आएको जानकारी।" }
+      '단도리 해': { ko: "작업 전 필요한 도면, 자재, 공구를 사전에 준비하고 작업 반경을 안전하게 정리하는 현장 기초 단계입니다.", id: "Langkah dasar lapangan: menyiapkan gambar, material, alat, dan merapikan area kerja secara aman sebelum bekerja.", vi: "Bước cơ bản tại hiện trường: chuẩn bị trước bản vẽ, vật tư, dụng cụ và dọn dẹp khu vực làm việc an toàn trước khi làm.", np: "काम सुरु गर्नु अघि आवश्यक नक्सा, सामग्री र औजारहरू तयार गर्ने र काम गर्ने क्षेत्र सुरक्षित रूपमा सफा गर्ने आधारभूत चरण हो." },
+      '시마이해': { ko: "당일 할당된 작업 물량을 종료하고, 공구 반납 및 주변 쓰레기 정리를 완벽히 마친 뒤 퇴근을 준비하라는 지시입니다.", id: "Instruksi untuk mengakhiri target pekerjaan hari ini, mengembalikan alat, membersihkan sampah sekitar, dan bersiap pulang.", vi: "Chỉ thị kết thúc khối lượng công việc trong ngày, trả lại dụng cụ, dọn sạch rác xung quanh và chuẩn bị ra về.", np: "आजको लागि तोकिएको काम समाप्त गर्ने, औजारहरू फिर्ता गर्ने, वरपरको फोहोर पूर्ण रूपमा सफा गर्ने र घर जान तयार हुने निर्देशन हो." },
+      '야리끼 해': { ko: "회사에서 부여한 특정 목표 작업량을 달성할 경우, 남은 정규 근무 시간과 무관하게 조기 퇴근을 허용하는 현장 도급식 은어입니다.", id: "Istilah borongan: jika target pekerjaan selesai lebih awal, pekerja diizinkan pulang tanpa harus menunggu jam kerja normal berakhir.", vi: "Tiếng lóng khoán việc: nếu đạt đủ khối lượng công việc mục tiêu, cho phép về sớm bất kể thời gian làm việc chính thức còn lại.", np: "तोकिएको लक्ष्य पूरा भएमा बाँकी समयको मतलब नगरी चाँडै घर जान दिइने ठेक्का प्रणालीको साइट शब्दावली हो." },
+      '사상해': { ko: "철판 절단면의 날카로운 버(Burr)나 용접 후 남은 불규칙한 비드 표면을 핸드 그라인더를 이용해 매끄럽게 갈아내는 연마 공정입니다.", id: "Proses menghaluskan sisa potongan tajam (burr) atau permukaan lasan yang tidak rata menggunakan mesin gerinda tangan.", vi: "Quá trình mài nhẵn các mép cắt sắc nhọn (burr) hoặc bề mặt đường hàn gồ ghề bằng máy mài cầm tay (grinder).", np: "काटेको फलामको तीखो भाग वा वेल्डिङ पछिको खस्रो सतहलाई ह्यान्ड ग्राइन्डर प्रयोग गरेर चिल्लो बनाउने प्रक्रिया हो." },
+      '하카 체결해': { ko: "크레인으로 무거운 철판이나 블록을 들어 올리기 위해, 부재의 끝부분에 중량물 리프팅 전용 클램프(하카)를 안전핀까지 확실히 고정하라는 의미입니다.", id: "Instruksi mengunci klem penjepit khusus (lifting clamp/huck) dengan peniti pengaman di ujung material untuk mengangkat plat berat dengan crane.", vi: "Chỉ thị gắn chặt kẹp nâng chuyên dụng (huck) vào mép vật tư và cài chốt an toàn để cẩu các tấm thép hoặc khối block nặng.", np: "क्रेनले भारी प्लेट वा ब्लक उठाउनको लागि फलामको छेउमा लिफ्टिङ क्ल्याम्प (हाका) लाई सेफ्टी पिन सहित सुरक्षित रूपमा कस्ने निर्देशन हो." },
+      '데나오시 해': { ko: "작업자의 실수나 품질 검사(QC) 불합격으로 인해, 기시공된 부위를 가우징이나 절단으로 해체하고 도면 규격에 맞춰 재시공(Rework)하라는 지시입니다.", id: "Instruksi Rework: Membongkar bagian yang salah atau gagal inspeksi QC (dengan gouging/potong) lalu mengerjakannya ulang sesuai gambar.", vi: "Chỉ thị làm lại (Rework): Tháo dỡ phần làm sai hoặc không đạt kiểm tra QC (bằng cách cắt/thổi than) và thi công lại theo đúng bản vẽ.", np: "कामदारको गल्ती वा QC परीक्षण फेल भएको कारणले, जोडिसकेको भागलाई काटेर वा गाउजिङ गरेर भत्काउने र नक्सा अनुसार फेरि काम (Rework) गर्ने निर्देशन हो." },
+      '아다리 걸렸다': { ko: "용접 불꽃 발생 시 보안경이나 차광면을 착용하지 않아, 강렬한 자외선 섬광에 의해 각막이 화상을 입어 눈에 극심한 통증이 발생한 상태(광각막염)를 뜻합니다.", id: "Kondisi mata terbakar (flash burn) dan sangat perih akibat menatap sinar las tanpa kacamata.", vi: "Tình trạng đau mắt dữ dội do bỏng giác mạc vì nhìn trực tiếp vào tia lửa hàn không đeo kính.", np: "सुरक्षा चस्मा वा मास्क नलगाई वेल्डिङको उज्यालो हेर्दा आँखाको नानी (Cornea) जलेर असाध्यै दुख्ने अवस्था (आँखा खाएको) हो." },
+      '가우징 파': { ko: "내부 결함이 발견된 용접 부위를 탄소 전극봉의 아크 열로 강하게 녹인 후, 고압 공기로 불어내어 U자 홈 형태로 깊게 파내는 절단 작업입니다.", id: "Proses mengupas lasan cacat (gouging) dengan memanaskan elektroda karbon dan meniupkan udara bertekanan tinggi untuk membentuk alur U dalam.", vi: "Quá trình cắt thổi than (gouging): nung chảy phần mối hàn bị lỗi bằng nhiệt hồ quang than và dùng khí nén áp lực cao thổi bay xỉ để khoét thành rãnh chữ U.", np: "खराब वेल्डिङ भएको ठाउँलाई कार्बन रडको तापले पगालेर हाइ प्रेसर हावाले उडाउँदै U आकारमा गहिरो गरी काट्ने (Gouging) काम हो." },
+      '턴오버 해': { ko: "대형 블록의 바닥면 용접이나 조립 각도 확보를 위해, 2대 이상의 크레인 와이어를 걸어 공중에서 블록을 180도 뒤집는 고위험 필수 공정입니다.", id: "Pekerjaan sangat berbahaya membalikkan blok raksasa 180 derajat di udara menggunakan crane ganda untuk mengelas bagian bawahnya.", vi: "Công đoạn rủi ro cao: dùng cần cẩu móc dây cáp để lật ngược khối block khổng lồ 180 độ trên không trung nhằm phục vụ việc hàn phần đáy.", np: "विशाल ब्लकको तल्लो भाग वेल्डिङ गर्न वा दिशा मिलाउन क्रेनको तार जोडेर हावामै ब्लकलाई १८० डिग्री पल्टाउने अत्यन्त खतरनाक तर आवश्यक प्रक्रिया हो." },
+      'LOTO 실시해': { ko: "장비 수리 및 점검 중 타인이 실수로 전원이나 밸브를 조작하여 발생하는 사망 사고를 막기 위해, 스위치에 물리적 자물쇠(Lock)와 경고 태그(Tag)를 부착하는 안전 절차입니다.", id: "Prosedur keselamatan Lock Out Tag Out: memasang gembok fisik dan label peringatan pada sakelar mesin agar tidak dihidupkan orang lain saat sedang diperbaiki.", vi: "Quy trình an toàn LOTO (Khóa và Gắn thẻ): khóa ổ khóa vật lý và treo thẻ cảnh báo vào công tắc thiết bị đang sửa chữa để ngăn người khác vô tình bật lên.", np: "उपकरण मर्मत गर्दा अरूले झुक्किएर स्विच अन गरी हुने दुर्घटना रोक्न, स्विचमा ताला (Lock) र चेतावनी ट्याग (Tag) लगाउने अत्यन्त महत्त्वपूर्ण सुरक्षा प्रक्रिया हो." },
+      '취부해': { ko: "설계 도면에 명시된 치수와 각도에 정확히 맞추어 두 개의 부품을 정위치시킨 뒤, 본 용접 전까지 틀어지지 않도록 임시로 점용접(Tack Weld)하여 고정하는 작업입니다.", id: "Pekerjaan Fitting: memposisikan dua material secara presisi sesuai gambar, lalu melakukan las cantum sementara (tack weld) agar tidak bergeser sebelum pengelasan utama.", vi: "Công việc gá lắp (Fitting): định vị chính xác hai chi tiết theo kích thước bản vẽ, sau đó hàn đính tạm (tack weld) để cố định không bị lệch trước khi hàn chính thức.", np: "नक्सामा दिएको नाप र कोण अनुसार दुई भागलाई सही ठाउँमा राखेर, मुख्य वेल्डिङ गर्नु 어घि नहल्लिने गरी अस्थायी रूपमा ट्याक वेल्डिङ (Tack weld) गर्ने काम हो." },
+      '리꾸 박아라': { ko: "철판 절단 실수나 단차로 인해 부재 간의 조립 간격(Gap)이 규정치 이상으로 뻥 뚫려 넓어진 공간에, 덧판을 대지 않고 용접 비드를 여러 겹 두껍게 쌓아 올려 틈새를 메꾸는 보강 용접입니다.", id: "Mengisi celah lebar (gap) antar material akibat salah potong dengan menumpuk lapisan lasan tebal berkali-kali (build-up) tanpa menggunakan plat tambahan.", vi: "Hàn đắp bù (Build-up): hàn đắp nhiều lớp mối hàn cho dày lên để lấp kín khoảng hở (gap) quá rộng giữa các chi tiết do cắt sai mà không dùng thêm thép ốp.", np: "काट्दा गल्ती भएर वा नमिलेर फलाम बीचको ग्याप (Gap) धेरै फराकिलो भएको ठाउँमा, अतिरिक्त प्लेट नराखी वेल्डिङको पत्र (Bead) खप्टाएर भर्ने काम हो." },
+      '나라시 해': { ko: "크레인이나 지게차로 현장에 무분별하게 하역된 자재 더미들을, 후속 조립 작업자가 즉시 사용할 수 있도록 바닥에 겹치지 않게 평평하고 가지런하게 펼쳐서 정렬해두는 작업입니다.", id: "Merapikan dan menyusun material yang menumpuk di lantai secara merata dan tidak saling tindih agar pekerja selanjutnya mudah mengambilnya.", vi: "Dọn dẹp và sắp xếp trải đều các vật tư đang chất đống trên sàn sao cho không chồng chéo lên nhau để người làm công đoạn sau dễ dàng sử dụng.", np: "क्रेन वा फोर्कलिफ्टले ल्याएर थुपारिएका सामग्रीहरूलाई पछिको कामदारले सजिलै लिन सकोस् भनेर भुइँमा नखप्टिने गरी समतल र मिलाएर राख्ने काम हो." },
+      '빠데 발라': { ko: "페인트 도장 품질을 높이기 위해, 철판 표면의 미세한 굴곡, 패임, 용접 기공(Blowhole) 등의 결함 부위에 점성이 높은 퍼티(Putty) 화합물을 주걱으로 눌러 발라 표면을 유리처럼 평탄화시키는 전처리입니다.", id: "Mempersiapkan permukaan sebelum dicat dengan mengoleskan dempul (putty) tebal ke lubang kecil atau permukaan lasan tidak rata agar menjadi mulus seperti kaca.", vi: "Xử lý bề mặt trước khi sơn: dùng dao trét bả matit (putty) đặc vào các vết lõm, lỗ bọt khí mối hàn để làm phẳng bề mặt thép nhẵn như kính.", np: "पेन्टिङको गुणस्तर बढाउन, फलामको सतहमा भएको खाल्डो वा वेल्डिङको प्वालहरूमा पुट्टी (Putty) लेपेर सतहलाई सिसा जस्तै चिल्लो र समतल बनाउने पूर्व-तयारी काम हो." },
+      '헤자 이동해라': { ko: "수백 톤에서 수천 톤에 달하는 완성 초대형 블록을 운반하기 위해, 수십 개의 바퀴가 달린 특수 중량물 운반 차량(Transporter/헤자)을 유도하라는 지시입니다.", id: "Instruksi untuk memandu kendaraan pengangkut super berat (Transporter/Heza) beroda puluhan menuju lokasi untuk memindahkan blok raksasa seberat ratusan ton ke dok.", vi: "Chỉ thị gọi và dẫn đường cho xe vận chuyển siêu trọng (Transporter/Heza) có hàng chục bánh xe đến để di chuyển khối block khổng lồ nặng hàng trăm tấn sang khu vực tiếp theo.", np: "सयौं टन तौल भएको विशाल ब्लकलाई अर्को ठाउँमा सार्नको लागि दर्जनौं पाङ्ग्रा भएको विशेष भारी गाडी (ट्रान्सपोर्टर/हेजा) लाई तोकिएको ठाउँमा ल्याउन गरिने निर्देशन हो." },
+      '물팀 조출했어': { ko: "블록 도장 전 철판에 묻은 염분, 먼지, 기름때 등을 제거하기 위해, 초고압 살수기 장비를 다루는 수세척 팀이 정규 시간보다 일찍 조기 출근하여 현장을 세척하고 있다는 알림입니다.", id: "Pemberitahuan bahwa tim khusus pencuci air tekanan tinggi (Water blasting) sudah datang bekerja lebih awal dari jam normal untuk membersihkan garam dan minyak sebelum pengecatan.", vi: "Thông báo rằng đội chuyên xịt rửa áp lực cao (đội nước) đã đi làm sớm hơn giờ hành chính để rửa sạch muối, bụi, dầu mỡ trên thép trước khi bắt đầu sơn.", np: "पेन्टिङ गर्नु अघि फलाममा लागेको नुन, धुलो र चिल्लो पखाल्न हाइ प्रेसर पानी हान्ने टोली (पानी टिम) नियमित समय भन्दा अगावै आएर काम गरिरहेको छ भन्ने जानकारी हो." }
     };
+
     const getDeptIcon = (dept) => {
       const iconClasses = "w-7 h-7 sm:w-8 sm:h-8";
       switch(dept) {
@@ -549,10 +625,8 @@
       }
     };
 
-    // 데이터가 윈도우 전역에 선언되어 있지 않으면 빈 배열 할당
     const rawDataArray = window.HD_DATA || [];
-    
-    // 에러 발생을 원천 차단하는 강력한 파싱 로직
+
     const parsedData = (() => {
       const res = { '공통': [], '가공부': [], '판넬조립부': [], '대조립부': [], '선행의장부': [], '선행도장부': [], '의장부': [], '건조부': [], '선실생산부': [], '선박커미셔닝부': [] };
       try {
@@ -1004,6 +1078,12 @@
                       </div>
                     );
                   })}
+                  {filteredData.length === 0 && (
+                    <div className="text-center py-16 text-slate-400 font-bold">
+                       <span className="text-2xl block mb-2">📥</span>
+                       {t.empty}<br/><span className="text-[12px] opacity-70 font-medium">코드 하단에 데이터를 넣어주세요.</span>
+                    </div>
+                  )}
                 </div>
               </div>
             )}
