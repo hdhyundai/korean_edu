@@ -177,7 +177,6 @@
     // ==========================================
     // 주의: 아래 배열에 반드시 데이터가 들어있어야 합니다.
     const rawStrings = [
-// [1. 공통 부서 - 53문장]
       "공통|안전 및 보호구|보호구 착용해|안전 장비를 반드시 착용하세요|Pakai alat pelindung diri|Bo-ho-gu chak-yong-hae|Hãy mặc đồ bảo hộ đầy đủ|Bo-ho-gu chak-yong-hae|सुरक्षा उपकरण लगाउनुहोस्|Bo-ho-gu chak-yong-hae",
       "공통|안전 및 보호구|안전벨트 체결해|추락 방지용 안전벨트를 고정하세요|Kencangkan sabuk pengaman|An-jeon-bel-teu che-gyeol-hae|Hãy thắt chặt dây an toàn|An-jeon-bel-teu che-gyeol-hae|सुरक्षा बेल्ट बाँध्नुहोस्|An-jeon-bel-teu che-gyeol-hae",
       "공통|안전 및 보호구|벨트 꼭 매|안전벨트를 단단히 조여 매세요|Kencangkan sabuk pengaman|Bel-teu kkok mae|Hãy thắt chặt dây an toàn|Bel-teu kkok mae|बेल्ट कडा बाँध्नुहोस्|Bel-teu kkok mae",
@@ -231,8 +230,6 @@
       "공통|생활 및 소통|포도당 먹어|어지러우면 포도당을 드세요|Minum pil glukosa|Po-do-dang meo-geo|Uống viên đường glucose|Po-do-dang meo-geo|ग्लुकोज खानुहोस्|Po-do-dang meo-geo",
       "공통|생활 및 소통|고생했어|오늘 하루 수고 많으셨습니다|Terima kasih atas kerja kerasnya|Go-saeng-haet-seo|Bạn vất vả rồi|Go-saeng-haet-seo|तपाईंको मिहिनेतको लागि धन्यवाद|Go-saeng-haet-seo",
       "공통|생활 및 소통|내일 봐|오늘 일 마치고 내일 뵙겠습니다|Sampai jumpa besok|Nae-il bwa|Hẹn gặp lại ngày mai|Nae-il bwa|भोलि भेटौंला|Nae-il bwa",
-
-      // [2. 가공부 - 39문장]
       "가공부|절단/마킹|NC 커팅 시작해|기계 절단 장비를 가동하세요|Mulai pemotongan mesin NC|En-si keo-ting si-jak-hae|Bắt đầu chạy máy cắt NC|En-si keo-ting si-jak-hae|NC मेसिनबाट कटिङ सुरु गर्नुहोस्|En-si keo-ting si-jak-hae",
       "가공부|절단/마킹|철판 마킹 확인해|철판에 그어진 선을 확인하세요|Periksa garis penandaan plat|Cheol-pan ma-king hwa-gin-hae|Kiểm tra vạch kẻ trên thép|Cheol-pan ma-king hwa-gin-hae|फलाममा कोरिएको लाइन जाँच्नुहोस्|Cheol-pan ma-king hwa-gin-hae",
       "가공부|절단/마킹|모재 두께 재봐|철판의 두께가 맞는지 측정하세요|Ukur ketebalan plat dasar|Mo-jae du-kke jae-bwa|Đo độ dày của thép|Mo-jae du-kke jae-bwa|प्लेटको मोटाई नाप्नुहोस्|Mo-jae du-kke jae-bwa",
@@ -272,8 +269,6 @@
       "가공부|공구/장비|하카 체결해|리프팅 클램프(하카)를 철판에 단단히 물려 고정해|Pasang dan kunci klem pengangkat pada plat besi|Ha-ka che-gyeol-hae|Ngậm chặt kẹp nâng (huck) vào mép tấm thép|Ha-ka che-gyeol-hae|प्लेट उठाउने क्ल्याम्प (हाका) लाई राम्रोसँग कस्नुहोस्|Ha-ka che-gyeol-hae",
       "가공부|작업/환경|모루에 가서 해라|소형 작업은 철제 작업대(모루) 위에서 하세요|Lakukan pekerjaan kecil di atas meja besi (moru)|Mo-ru-e ga-seo hae-ra|Đem ra bàn sắt chuyên dụng mà làm|Mo-ru-e ga-seo hae-ra|सानो काम फलामको टेबल (मोरु) मा गएर गर्नुहोस्|Mo-ru-e ga-seo hae-ra",
       "가공부|작업/환경|씹힌다|철판 사이에 손이나 공구가 눌려서 끼인다|Awas tangan atau alat terjepit di antara plat besi|Ssip-hin-da|Cẩn thận tay hoặc dụng cụ bị kẹt giữa các tấm thép|Ssip-hin-da|प्लेटको बीचमा हात वा औजार च्यापिन सक्छ|Ssip-hin-da",
-
-      // [3. 판넬조립부 - 48문장]
       "판넬조립부|취부/조립|론지 배치해|바닥 철판 위에 가로 보강재(론지)를 배열하세요|Susun rangka memanjang di atas plat lantai|Ron-ji bae-chi-hae|Bố trí các thanh dầm dọc trên tấm đáy|Ron-ji bae-chi-hae|भुइँको प्लेटमा लन्जिट्युडिनल (लामो सपोर्ट) मिलाएर राख्नुहोस्|Ron-ji bae-chi-hae",
       "판넬조립부|취부/조립|론지 간격 재봐|보강재 사이의 배열 간격이 도면과 맞는지 확인하세요|Ukur apakah jarak antar rangka sesuai dengan gambar|Ron-ji gan-gyeok jae-bwa|Đo xem khoảng cách giữa các thanh dọc có đúng bản vẽ không|Ron-ji gan-gyeok jae-bwa|लन्जिट्युडिनल बीचको दूरी नक्सा अनुसार छ कि नाप्नुहोस्|Ron-ji gan-gyeok jae-bwa",
       "판넬조립부|취부/조립|론지 똑바로 세워|보강재가 눕지 않게 직각자(스퀘어)로 90도를 세우세요|Berdirikan rangka lurus 90 derajat menggunakan penggaris siku|Ron-ji ttok-ba-ro se-wo|Dựng thanh dọc thẳng đứng 90 độ bằng thước ke|Ron-ji ttok-ba-ro se-wo|स्क्वायर (९० डिग्री नाप्ने औजार) ले लन्जिट्युडिनल सीधा ठाडो पार्नुहोस्|Ron-ji ttok-ba-ro se-wo",
@@ -322,7 +317,6 @@
       "판넬조립부|장비/공구|썰어브러|잘못 조립되어 튀어나온 쇳조각이나 임시 피스를 산소 절단기나 그라인더로 싹둑 잘라내 버리세요|Potong habis besi yang menonjol atau salah pasang pakai blender potong|Sseo-reo-beu-reo|Cắt phăng mấy miếng sắt thừa hoặc gá phụ bằng máy cắt đi|Sseo-reo-beu-reo|गलत फिटिङ भएको वा बाहिर निस्केको फलामको टुक्रालाई ग्यास कटरले काटेर फालिदिनुहोस्|Sseo-reo-beu-reo",
       "판넬조립부|장비/공구|문대브러|절단하고 남은 날카로운 끄투머리나 지저분한 용접부를 사상 그라인더로 깨끗하게 밀어버리세요|Gerinda habis ujung tajam dan area las yang kotor sampai halus sempurna|Mun-dae-beu-reo|Dùng máy mài làm nhẵn bóng các mép cắt sắc nhọn và mối hàn xấu|Mun-dae-beu-reo|काटेर बाँकी रहेको तीखो भाग र फोहोर वेल्डिङलाई ग्राइन्डरले घोटेर सफा र चिल्लो पार्नुहोस्|Mun-dae-beu-reo",
       "판넬조립부|장비/공구|가스통 바꿔|용접기 가스 게이지가 바닥났으니 즉시 창고에서 꽉 찬 산소 또는 CO2 실린더로 굴려서 교체하세요|Segera ganti tabung gas yang habis dengan silinder baru dari gudang|Ga-seu-tong ba-kkwo|Đồng hồ khí hết rồi, hãy đi đổi ngay bình khí CO2 hoặc Oxy mới đi|Ga-seu-tong ba-kkwo|ग्यास सकिएकोले तुरुन्तै गोदामबाट भरिएको अक्सिजन वा CO2 ग्यासको सिलिन्डर ल्याएर फेर्नुहोस्|Ga-seu-tong ba-kkwo"
-// [4. 대조립부 - 38문장]
       "대조립부|취부/탑재|핀지그 높이 조절해|곡면 블록 받침대(핀지그) 높이를 맞추세요|Atur ketinggian pin jig|Pin-ji-geu no-pi jo-jeol-hae|Điều chỉnh độ cao pin jig|Pin-ji-geu no-pi jo-jeol-hae|पिन जिगको उचाइ मिलाउनुहोस्|Pin-ji-geu no-pi jo-jeol-hae",
       "대조립부|취부/탑재|갭 줄여|벌어진 철판 틈새(갭)를 좁히세요|Perkecil jarak celah|Gaep ju-ryeo|Thu hẹp khoảng hở|Gaep ju-ryeo|खाली ठाउँ कम गर्नुहोस्|Gaep ju-ryeo",
       "대조립부|취부/탑재|서포트 세워|안전을 위해 하부 지지대를 단단히 세우세요|Dirikan tiang penyangga|Seo-po-teu se-wo|Dựng giá đỡ lên|Seo-po-teu se-wo|सपोर्ट खडा गर्नुहोस्|Seo-po-teu se-wo",
@@ -361,8 +355,6 @@
       "대조립부|장비/공구|지브 크레인 간섭 주의하세요|소형 크레인 가동 시 주변 장비와 부딪히지 않게 조심하세요|Awas tabrakan dengan derek kecil|Ji-beu keu-re-in gan-seop ju-ui-ha-se-yo|Chú ý va chạm với cần trục Jib|Ji-beu keu-re-in gan-seop ju-ui-ha-se-yo|जिभ क्रेन ठोक्किनबाट बचाउनुहोस्|Ji-beu keu-re-in gan-seop ju-ui-ha-se-yo",
       "대조립부|작업/안전|권상 시작합니다, 대피하세요|중량물을 들어 올리니 하부 인원은 모두 대피하세요|Pengangkatan dimulai silakan menghindar|Gwon-sang si-jak-ham-ni-da, dae-pi-ha-se-yo|Bắt đầu nâng hàng hãy tránh ra|Gwon-sang si-jak-ham-ni-da, dae-pi-ha-se-yo|सामान उठाउँदैछ सुरक्षित ठाउँमा जानुहोस्|Gwon-sang si-jak-ham-ni-da, dae-pi-ha-se-yo",
       "대조립부|블록/탑재|블록 탑재 일정 당겨졌습니다|선행 작업이 빨리 끝나 탑재 일정이 예상보다 앞당겨졌습니다|Jadwal pemasangan blok dimajukan|Beul-rok tap-jae il-jeong dang-gyeo-jyeot-seum-ni-da|Lịch cẩu lắp khối đã được đẩy sớm|Beul-rok tap-jae il-jeong dang-gyeo-jyeot-seum-ni-da|블록 लोड गर्ने समय अगाडि सर्यो|Beul-rok tap-jae il-jeong dang-gyeo-jyeot-seum-ni-da",
-
-      // [5. 선행의장부 - 46문장]
       "선행의장부|배관/설치|배관 깔아|도면 경로를 따라 바닥이나 천장에 파이프를 배치하세요|Gelar pipa|Bae-gwan kka-ra|Trải ống ra|Bae-gwan kka-ra|पाइप बिछ्याउनुहोस्|Bae-gwan kka-ra",
       "선행의장부|배관/설치|서포트 용접해|파이프 하중을 견딜 받침대(서포트)를 견고하게 용접하세요|Las tiang penyangga|Seo-po-teu yong-jeop-hae|Hàn giá đỡ ống|Seo-po-teu yong-jeop-hae|सपोर्ट वेल्डिङ गर्नुहोस्|Seo-po-teu yong-jeop-hae",
       "선행의장부|배관/설치|서포트 높이 재|설치된 파이프 지지대의 높이가 도면 레벨과 일치하는지 재보세요|Ukur tinggi penyangga|Seo-po-teu no-pi jae|Đo chiều cao giá đỡ|Seo-po-teu no-pi jae|सपोर्टको उचाइ नाप्नुहोस्|Seo-po-teu no-pi jae",
@@ -409,7 +401,6 @@
       "선행의장부|검사/기타|아다리 걸렸다|보안경 없이 용접 불빛을 보다가 눈 각막 화상(광각막염)에 걸렸습니다|Sakit mata karena sinar las|A-da-ri geol-ryeot-da|Bị đau mắt do ánh sáng hàn|A-da-ri geol-ryeot-da|वेल्डिङले आँखा खायो|A-da-ri geol-ryeot-da",
       "선행의장부|검사/기타|팀장에게 보고해|설계가 안 맞거나 심각한 문제를 발견하면 임의로 손대지 말고 보고하세요|Laporkan kepada ketua regu|Tim-jang-e-ge bo-go-hae|Báo cáo cho tổ trưởng|Tim-jang-e-ge bo-go-hae|टिम लिडरलाई रिपोर्ट गर्नुहोस्|Tim-jang-e-ge bo-go-hae",
       "선행의장부|검사/기타|아다리가 안맞는다|볼트 홀이나 부품 치수가 어긋나서 아예 조립이 불가능한 상태입니다|Posisi material tidak cocok|A-da-ri-ga an-mat-neun-da|Các cấu kiện không khớp nhau|A-da-ri-ga an-mat-neun-da|नाप मिलेन फिट भएन|A-da-ri-ga an-mat-neun-da",      
-// [6. 선행도장부 - 47문장]
       "선행도장부|도장/스프레이|라인큐시 들어가|도막 두께와 품질을 측정하는 단계입니다|Periksa ketebalan cat (Line QC)|Ra-in-kyu-si deu-reo-ga|Kiểm tra độ dày màng sơn|Ra-in-kyu-si deu-reo-ga|पेन्टको मोटाई जाँच्नुहोस्|Ra-in-kyu-si deu-reo-ga",
       "선행도장부|도장/스프레이|뺑끼 섞어|페인트 원액과 경화제를 잘 혼합하세요|Campurkan cat|Ppaeng-kki seok-keo|Pha sơn đi|Ppaeng-kki seok-keo|पेन्ट मिसाउनुहोस्|Ppaeng-kki seok-keo",
       "선행도장부|도장/스프레이|롤러 쳐|스프레이가 안 닿는 곳은 롤러로 칠하세요|Oleskan dengan rol cat|Rol-reo chyeo|Lăn sơn đi|Rol-reo chyeo|रोलरले पेन्ट गर्नुहोस्|Rol-reo chyeo",
@@ -457,8 +448,6 @@
       "선행도장부|작업/구역|오버헤드 작업이야 안경써|상부 천장 도장 작업이므로 보안경을 쓰세요|Pekerjaan di atas kepala, pakai kacamata|O-beo-he-deu ja-geop-i-ya an-gyeong-sseo|Làm trên đầu nên nhớ đeo kính|O-beo-he-deu ja-geop-i-ya an-gyeong-sseo|माथि छानोमा काम गर्दा चस्मा लगाउनुहोस्|O-beo-he-deu ja-geop-i-ya an-gyeong-sseo",
       "선행도장부|작업/구역|물팀 조출했어|표면 세척 작업자들이 정규 시간보다 일찍 출근했습니다|Tim pencuci air datang lebih awal|Mul-tim jo-chul-haet-seo|Đội rửa nước đã đi làm sớm|Mul-tim jo-chul-haet-seo|पानी सफा गर्ने टोली चाँडै आयो|Mul-tim jo-chul-haet-seo",
       "선행도장부|작업/구역|물반장한테 물어봐|수세척 공정 관련 일정은 세척 반장에게 문의하세요|Tanyakan kepada mandor pencuci|Mul-ban-jang-han-te mu-reo-bwa|Hỏi tổ trưởng đội rửa nước|Mul-ban-jang-han-te mu-reo-bwa|पानी टोलीको इन्चार्जलाई सोध्नुहोस्|Mul-ban-jang-han-te mu-reo-bwa",
-
-      // [7. 의장부 - 53문장]
       "의장부|배관/설치|밸브 오픈 확인해|시스템 가동 전 배관의 메인 밸브가 열렸는지 보세요|Periksa apakah katup terbuka|Bael-beu o-peun hwa-gin-hae|Kiểm tra xem đã mở van chưa|Bael-beu o-peun hwa-gin-hae|भल्भ खुला छ कि जाँच्नुहोस्|Bael-beu o-peun hwa-gin-hae",
       "의장부|배관/설치|밸브 클로즈 확인해|유체 차단을 위해 해당 밸브가 완전히 잠겼는지 보세요|Periksa apakah katup tertutup|Bael-beu keul-ro-jeu hwa-gin-hae|Kiểm tra xem đã đóng van chưa|Bael-beu keul-ro-jeu hwa-gin-hae|भल्भ बन्द छ कि जाँच्नुहोस्|Bael-beu keul-ro-jeu hwa-gin-hae",
       "의장부|배관/설치|배관 연결 확인해|플랜지 등 파이프 간 연결 부위가 체결되었는지 보세요|Periksa sambungan pipa|Bae-gwan yeon-gyeol hwa-gin-hae|Kiểm tra kết nối đường ống|Bae-gwan yeon-gyeol hwa-gin-hae|पाइपको जडान जाँच्नुहोस्|Bae-gwan yeon-gyeol hwa-gin-hae",
@@ -512,7 +501,6 @@
       "의장부|작업/기타|야간 작업 교대해|밤샘 작업을 위해 다음 조와 임무를 교대하세요|Ganti shift untuk pekerjaan malam|Ya-gan ja-geop gyo-dae-hae|Giao ca làm việc ban đêm|Ya-gan ja-geop gyo-dae-hae|रात्रिकालीन काम फेर्नुहोस्|Ya-gan ja-geop gyo-dae-hae",
       "의장부|작업/기타|조금만 들어봐|부재 조립을 위해 물건을 살짝 들어 올리세요|Coba angkat sedikit saja|Jo-geum-man deu-reo-bwa|Nhấc lên một chút xíu thôi|Jo-geum-man deu-reo-bwa|थोरै उठाउनुहोस्|Jo-geum-man deu-reo-bwa",
       "의장부|작업/기타|불받이 설치해|용접 불꽃 비산을 막기 위해 방염포를 설치하세요|Pasang terpal penahan percikan api|Bul-ba-ji seol-chi-hae|Lắp bạt chắn tia lửa hàn|Bul-ba-ji seol-chi-hae|आगो छेक्ने कभर राख्नुहोस्|Bul-ba-ji seol-chi-hae"
-// [9. 선실생산부 - 50문장]
       "선실생산부|인테리어|천장 실링 판넬 설치해|선실 천장에 마감 판넬을 조립하세요|Pasang panel plafon|Cheon-jang sil-ring pan-nel seol-chi-hae|Lắp tấm trần|Cheon-jang sil-ring pan-nel seol-chi-hae|सिलिङ प्यानल जडान गर्नुहोस्|Cheon-jang sil-ring pan-nel seol-chi-hae",
       "선실생산부|인테리어|바닥 타일 작업해|화장실 바닥에 타일을 정교하게 붙이세요|Pasang ubin lantai|Ba-dak ta-il ja-geop-hae|Lát gạch sàn|Ba-dak ta-il ja-geop-hae|भुइँको टायल लगाउनुहोस्|Ba-dak ta-il ja-geop-hae",
       "선실생산부|인테리어|벽 수평 확인해|벽면 판넬이 기울지 않았는지 수평계로 보세요|Cek kerataan dinding|Byeok su-pyeong hwa-gin-hae|Kiểm tra độ cân tường|Byeok su-pyeong hwa-gin-hae|भित्ता सिधा छ कि जाँच्नुहोस्|Byeok su-pyeong hwa-gin-hae",
@@ -563,8 +551,6 @@
       "선실생산부|기타|발판 조심해|높은 곳 판넬 작업 시 발판을 잘 디디세요|Hati-hati dengan pijakan|Bal-pan jo-sim-hae|Cẩn thận giàn giáo|Bal-pan jo-sim-hae|खटमा होसियार हुनुहोस्|Bal-pan jo-sim-hae",
       "선실생산부|기타|사다리 조심해|사다리를 타고 천장 작업 시 조심하세요|Hati-hati saat memakai tangga|Sa-da-ri jo-sim-hae|Cẩn thận khi dùng thang|Sa-da-ri jo-sim-hae|भर्याङमा होसियार हुनुहोस्|Sa-da-ri jo-sim-hae",
       "선실생산부|기타|서포트 설치해|판넬이나 가구가 처지지 않게 보조대를 대세요|Pasang penyangga support|Seo-po-teu seol-chi-hae|Lắp giá đỡ support|Seo-po-teu seol-chi-hae|सपोर्ट जडान गर्नुहोस्|Seo-po-teu seol-chi-hae",
-
-      // [10. 선박커미셔닝부 - 74문장]
       "선박커미셔닝부|전기|파워 올려|판넬 및 장비의 메인 전원을 공급하세요|Nyalakan daya listrik|Pa-wo ol-ryeo|Bật nguồn điện lên|Pa-wo ol-ryeo|पावर अन गर्नुहोस्|Pa-wo ol-ryeo",
       "선박커미셔닝부|전기|파워 꺼|전기 점검을 위해 전원을 차단하세요|Matikan daya listrik|Pa-wo kkeo|Tắt nguồn điện đi|Pa-wo kkeo|पावर अफ गर्नुहोस्|Pa-wo kkeo",
       "선박커미셔닝부|전기|전원 오프|스위치를 내려서 전기를 완전히 끄세요|Matikan sumber daya utama|Jeon-won o-peu|Ngắt điện nguồn|Jeon-won o-peu|बिजुली बन्द गर्नुहोस्|Jeon-won o-peu",
